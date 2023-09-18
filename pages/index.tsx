@@ -5,30 +5,26 @@ import io from "socket.io-client";
 import { useEffect, useState } from 'react';
 
 const PRODUCT_URL = process.env.NEXT_PUBLIC_API_URL;
-const socket = io();
+const socket = io(`${PRODUCT_URL}api/socketio`);
 
 export default function Home() {
   const [message, setMessage] = useState("");
   const [messageList, setMessageList] = useState<any>([]);
 
   useEffect(() => {
-    fetch(`${PRODUCT_URL}/api/socketio`).finally(() => {
-      socket.on("connect", () => {
-        console.log("socket server connected.");
-      });
-
-
-      socket.on("disconnect", () => {
-        console.log("socket server disconnected.");
-      });
-      socket.emit("hello", "정민상", (response: any) => {
-        console.log(response + "입장");
-      });
-    })
+    socket.on("connect", () => {
+      console.log("socket server connected.");
+    });
+    socket.on("disconnect", () => {
+      console.log("socket server disconnected.");
+    });
+    socket.emit("hello", "정민상", (response: any) => {
+      console.log(response + "입장");
+    });
   }, []);
 
   useEffect(() => {
-    fetch(`${PRODUCT_URL}/api/socketio`).finally(() => {
+    fetch(`/api/socketio`).finally(() => {
       socket.on("receivemsg", (data) => {
         setMessageList([...messageList, data]);
       });
@@ -36,7 +32,7 @@ export default function Home() {
   }, [messageList]);
 
   const handleSend = () => {
-    fetch(`${PRODUCT_URL}/api/socketio`).finally(() => {
+    fetch(`/api/socketio`).finally(() => {
       socket.emit("sendmsg", message);
       console.log(message);
       setMessage("");
