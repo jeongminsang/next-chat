@@ -12,23 +12,27 @@ export default function Home() {
   const [messageList, setMessageList] = useState<any>([]);
 
   useEffect(() => {
-    io(`${PRODUCT_URL}`, { path: "/api/socketio" });
-    socket.on("connect", () => {
-      console.log("socket server connected.");
-    });
+    fetch(`${PRODUCT_URL}/api/socketio`).finally(() => {
+      socket.on("connect", () => {
+        console.log("socket server connected.");
+      });
 
-    socket.on("disconnect", () => {
-      console.log("socket server disconnected.");
-    });
-    socket.emit("hello", "정민상", (response: any) => {
-      console.log(response + "입장");
-    });
+
+      socket.on("disconnect", () => {
+        console.log("socket server disconnected.");
+      });
+      socket.emit("hello", "정민상", (response: any) => {
+        console.log(response + "입장");
+      });
+    })
   }, []);
 
   useEffect(() => {
-    socket.on("receivemsg", (data) => {
-      setMessageList([...messageList, data]);
-    });
+    fetch(`${PRODUCT_URL}/api/socketio`).finally(() => {
+      socket.on("receivemsg", (data) => {
+        setMessageList([...messageList, data]);
+      });
+    })
   }, [messageList]);
 
   const handleSend = () => {
