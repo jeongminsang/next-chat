@@ -5,7 +5,8 @@ import io from "socket.io-client";
 import { useEffect, useState } from 'react';
 
 const PRODUCT_URL = process.env.NEXT_PUBLIC_API_URL;
-const socket = io("https://next-chat-test.vercel.app/", { path: "/api/socketio" });
+const socket = io("https://next-chat-test.vercel.app/", { path: "/socket.io" });
+// const socket = io("http://localhost:3000/", { path: "/socket.io" });
 console.log(socket)
 
 export default function Home() {
@@ -25,22 +26,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/socketio`).finally(() => {
-      socket.on("receivemsg", (data) => {
-        setMessageList([...messageList, data]);
-      });
-    })
     socket.on("receivemsg", (data) => {
       setMessageList([...messageList, data]);
+      console.log(data);
     });
+
   }, [messageList]);
 
   const handleSend = () => {
-    fetch(`/api/socketio`).finally(() => {
-      socket.emit("sendmsg", message);
-      console.log(message);
-      setMessage("");
-    })
     socket.emit("sendmsg", message);
     console.log(message);
     setMessage("");
