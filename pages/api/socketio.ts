@@ -41,6 +41,9 @@ const socketioHandler = (req: any, res: any) => {
       socket.on("sendmsg", (msg) => {
         io.emit("receivemsg", msg);
       });
+      socket.on("disconnect", () => {
+        console.log(`Socket ${socket.id} disconnected.`);
+      });
     });
 
     res.socket.server.io = io;
