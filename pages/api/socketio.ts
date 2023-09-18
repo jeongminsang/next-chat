@@ -38,8 +38,8 @@ const socketioHandler = (req: any, res: any) => {
         callback(arg);
       });
 
-      socket.on("sendmsg", (name, msg) => {
-        io.emit("receivemsg", name, msg);
+      socket.on("sendmsg", (msg) => {
+        io.emit("receivemsg", msg);
       });
     });
 
