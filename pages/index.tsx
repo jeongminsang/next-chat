@@ -32,7 +32,7 @@ export default function Home() {
   }, [messageList]);
 
   const handleSend = () => {
-    fetch('http://localhost:3000/api/socketio').finally(() => {
+    fetch(`${PRODUCT_URL}/api/socketio`).finally(() => {
       socket.emit("sendmsg", message);
       console.log(message);
       setMessage("");
