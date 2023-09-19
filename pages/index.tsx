@@ -5,7 +5,8 @@ import io from "socket.io-client";
 import { useEffect, useState } from 'react';
 
 const PRODUCT_URL = process.env.NEXT_PUBLIC_API_URL;
-const socket = io("https://next-chat-test.vercel.app/", { path: "/api/socketio" });
+// const socket = io("https://next-chat-test.vercel.app/", { path: "/api/socketio" });
+const socket = io(`${PRODUCT_URL}`);
 console.log(socket)
 
 export default function Home() {
